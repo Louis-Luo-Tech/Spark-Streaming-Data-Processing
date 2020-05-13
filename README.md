@@ -528,3 +528,41 @@ Building real-time streaming applications that transform or react to the streams
 
 Spark Streaming is an extension of the core Spark API that enables scalable, high-throughput, fault-tolerant stream processing of live data streams. Data can be ingested from many sources like Kafka, Flume, Kinesis, or TCP sockets, and can be processed using complex algorithms expressed with high-level functions like map, reduce, join and window. Finally, processed data can be pushed out to filesystems, databases, and live dashboards. In fact, you can apply Spark’s machine learning and graph processing algorithms on data streams.
 
+
+Spark Streaming is released with Spark 0.9
+
+Spark Sql is released with Spark 1.0.0
+
+# Example
+
+Use spark-submit
+
+
+Start a port
+```
+$ nc -lk 9999
+```
+
+```
+spark-submit \
+--class org.apache.spark.examples.streaming.NetworkWordCount \
+--master local \
+--name NetworkWordCount \
+/Users/xiangluo/app/spark-2.4.5-bin-hadoop2.7/examples/jars/spark-examples_2.11-2.4.5.jar localhost 9999
+```
+
+Use spark-shell
+
+```
+spark-shell --master local
+
+import org.apache.spark.streaming.{Seconds, StreamingContext}
+val ssc = new StreamingContext(sc, Seconds(1))
+val lines = ssc.socketTextStream("localhost", 9999)
+val words = lines.flatMap(_.split(" "))
+val wordCounts = words.map(x => (x, 1)).reduceByKey(_ + _)
+wordCounts.print()
+ssc.start()
+ssc.awaitTermination()
+```
+
