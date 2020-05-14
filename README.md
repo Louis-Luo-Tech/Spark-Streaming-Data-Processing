@@ -624,7 +624,5 @@ object StatefulWordCount {
     val pre = preValues.getOrElse(0)
     Some(current + pre)
   }
-
-
 }
 ```
