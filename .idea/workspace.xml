@@ -2,8 +2,117 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3cf2bb60-bd4c-47aa-8590-c28cee86e4f7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/FileWordCount.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/NerworkWordCount.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.checkpoint-1589453046000.bk.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.checkpoint-1589453046000.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.checkpoint-1589453047000.bk.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.checkpoint-1589453047000.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.checkpoint-1589453048000.bk.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.checkpoint-1589453048000.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.checkpoint-1589453049000.bk.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.checkpoint-1589453049000.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.checkpoint-1589453050000.bk.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.checkpoint-1589453050000.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/checkpoint-1589453046000" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/checkpoint-1589453046000.bk" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/checkpoint-1589453047000" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/checkpoint-1589453047000.bk" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/checkpoint-1589453048000" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/checkpoint-1589453048000.bk" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/checkpoint-1589453049000" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/checkpoint-1589453049000.bk" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/checkpoint-1589453050000" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/checkpoint-1589453050000.bk" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/._partitioner.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/.part-00000.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/.part-00001.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/.part-00002.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/.part-00003.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/.part-00004.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/.part-00005.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/.part-00006.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/.part-00007.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/.part-00008.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/.part-00009.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/_partitioner" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/part-00000" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/part-00001" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/part-00002" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/part-00003" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/part-00004" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/part-00005" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/part-00006" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/part-00007" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/part-00008" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-120/part-00009" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/._partitioner.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/.part-00000.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/.part-00001.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/.part-00002.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/.part-00003.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/.part-00004.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/.part-00005.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/.part-00006.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/.part-00007.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/.part-00008.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/.part-00009.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/_partitioner" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/part-00000" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/part-00001" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/part-00002" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/part-00003" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/part-00004" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/part-00005" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/part-00006" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/part-00007" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/part-00008" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ee3091e1-2ed6-4344-87c2-7aa63d1d1bd2/rdd-59/part-00009" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/._partitioner.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/.part-00000.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/.part-00001.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/.part-00002.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/.part-00003.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/.part-00004.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/.part-00005.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/.part-00006.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/.part-00007.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/.part-00008.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/.part-00009.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/_partitioner" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/part-00000" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/part-00001" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/part-00002" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/part-00003" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/part-00004" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/part-00005" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/part-00006" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/part-00007" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/part-00008" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-120/part-00009" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/._partitioner.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/.part-00000.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/.part-00001.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/.part-00002.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/.part-00003.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/.part-00004.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/.part-00005.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/.part-00006.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/.part-00007.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/.part-00008.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/.part-00009.crc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/_partitioner" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/part-00000" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/part-00001" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/part-00002" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/part-00003" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/part-00004" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/part-00005" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/part-00006" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/part-00007" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/part-00008" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/f68cf2f3-54c0-4bd3-a5ac-d3fe95397823/rdd-59/part-00009" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/receivedBlockMetadata/log-1589453003064-1589453063064" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/ForeachRDDApp.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/StatefulWordCount.scala" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Spark_WordCount/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Spark_WordCount/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Spark_WordCount/.idea/compiler.xml" afterDir="false" />
@@ -19,7 +128,9 @@
       <change beforePath="$PROJECT_DIR$/../Notes" beforeDir="false" afterPath="$PROJECT_DIR$/../Notes" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Scala_Spark_DataFrame" beforeDir="false" afterPath="$PROJECT_DIR$/../Scala_Spark_DataFrame" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/com/louis/spark/SparkStreamingExample.scala" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/com/louis/spark/NerworkWordCount.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/NerworkWordCount.scala" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/louis/spark/NerworkWordCount$.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/louis/spark/NerworkWordCount$.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/.idea/modules/Spark-Streaming-Realtime-Processing-Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/.idea/modules/Spark-Streaming-Realtime-Processing-Project.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/scala-2.12/sbt-1.0/update/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/scala-2.12/sbt-1.0/update/update_cache_2.12/output" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/streams/_global/update/_global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/streams/_global/update/_global/streams/out" afterDir="false" />
@@ -37,6 +148,20 @@
   <component name="CodeStyleSettingsInfer">
     <option name="done" value="true" />
   </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
+  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -51,13 +176,16 @@
     <option name="version" value="1" />
   </component>
   <component name="ProjectId" id="1boczebYx0fPSKQhFzGgDMcAQNI" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
@@ -72,14 +200,30 @@
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.louis.spark" />
     </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.louis.spark" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/src/main/java/com/louis/spark/kafka" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.FileWordCount">
+  <component name="RunManager" selected="Application.ForeachRDDApp">
     <configuration name="FileWordCount" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="com.louis.spark.FileWordCount" />
+      <module name="Spark-Streaming-Data-Processing" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.louis.spark.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ForeachRDDApp" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.louis.spark.ForeachRDDApp" />
       <module name="Spark-Streaming-Data-Processing" />
       <extension name="coverage">
         <pattern>
@@ -117,19 +261,26 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="Test" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="Test" />
+    <configuration name="StatefulWordCount" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.louis.spark.StatefulWordCount" />
       <module name="Spark-Streaming-Data-Processing" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.louis.spark.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.FileWordCount" />
+        <item itemvalue="Application.ForeachRDDApp" />
+        <item itemvalue="Application.StatefulWordCount" />
         <item itemvalue="Application.NerworkWordCount" />
+        <item itemvalue="Application.FileWordCount" />
         <item itemvalue="Application.SparkStreamingExample" />
-        <item itemvalue="Application.Test" />
       </list>
     </recent_temporary>
   </component>
@@ -153,22 +304,30 @@
       <updated>1589302150967</updated>
       <workItem from="1589302154469" duration="2443000" />
       <workItem from="1589307041841" duration="563000" />
-      <workItem from="1589307623181" duration="6017000" />
+      <workItem from="1589307623181" duration="13352000" />
+      <workItem from="1589448434656" duration="5060000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
   <component name="WindowStateProjectService">
     <state x="2261" y="234" key="#Project_Structure" timestamp="1589356097061">
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
     <state x="2261" y="234" key="#Project_Structure/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589356097061" />
-    <state x="2378" y="306" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1589404039895">
+    <state x="2378" y="306" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1589441661538">
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
-    <state x="2378" y="306" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589404039895" />
+    <state x="2378" y="306" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589441661538" />
+    <state x="1680" y="126" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1589443830164">
+      <screen x="1680" y="23" width="1920" height="1021" />
+    </state>
+    <state x="1680" y="126" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589443830164" />
     <state x="2695" y="402" key="#com.intellij.ide.util.frameworkSupport.AddFrameworkSupportDialog" timestamp="1589306919821">
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
@@ -177,22 +336,22 @@
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
     <state x="2214" y="311" width="423" height="276" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589356120146" />
-    <state width="1365" height="469" key="GridCell.Tab.0.bottom" timestamp="1589404549307">
+    <state width="1083" height="319" key="GridCell.Tab.0.bottom" timestamp="1589452930813">
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
-    <state width="1365" height="469" key="GridCell.Tab.0.bottom/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589404549307" />
-    <state width="1365" height="469" key="GridCell.Tab.0.center" timestamp="1589404549306">
+    <state width="1083" height="319" key="GridCell.Tab.0.bottom/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589452930813" />
+    <state width="1083" height="319" key="GridCell.Tab.0.center" timestamp="1589452930804">
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
-    <state width="1365" height="469" key="GridCell.Tab.0.center/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589404549306" />
-    <state width="1365" height="469" key="GridCell.Tab.0.left" timestamp="1589404549306">
+    <state width="1083" height="319" key="GridCell.Tab.0.center/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589452930804" />
+    <state width="1083" height="319" key="GridCell.Tab.0.left" timestamp="1589452930799">
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
-    <state width="1365" height="469" key="GridCell.Tab.0.left/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589404549306" />
-    <state width="1365" height="469" key="GridCell.Tab.0.right" timestamp="1589404549307">
+    <state width="1083" height="319" key="GridCell.Tab.0.left/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589452930799" />
+    <state width="1083" height="319" key="GridCell.Tab.0.right" timestamp="1589452930807">
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
-    <state width="1365" height="469" key="GridCell.Tab.0.right/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589404549307" />
+    <state width="1083" height="319" key="GridCell.Tab.0.right/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589452930807" />
     <state x="2199" y="230" key="Maven.ArtifactSearchDialog" timestamp="1589307365492">
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
@@ -205,10 +364,10 @@
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
     <state x="2668" y="304" width="540" height="524" key="StructurePopup/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589401770777" />
-    <state x="2354" y="401" key="com.intellij.ide.util.TipDialog" timestamp="1589307623724">
+    <state x="2354" y="401" key="com.intellij.ide.util.TipDialog" timestamp="1589448453954">
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
-    <state x="2354" y="401" key="com.intellij.ide.util.TipDialog/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589307623724" />
+    <state x="2354" y="401" key="com.intellij.ide.util.TipDialog/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589448453954" />
     <state x="2193" y="223" width="894" height="821" key="search.everywhere.popup" timestamp="1589400341828">
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
