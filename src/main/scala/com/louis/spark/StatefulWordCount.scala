@@ -15,7 +15,7 @@ object StatefulWordCount {
     val lines = ssc.socketTextStream("localhost", 6777)
     val words = lines.flatMap(_.split(" ")).map((_,1)) //(x => (x, 1))
     val state = words.updateStateByKey[Int](updateFunction _)
-
+//    val windowedWordCounts = words.reduceByKeyAndWindow((_+_), Seconds(30), Seconds(10))
     state.print()
     ssc.start()
     ssc.awaitTermination()
