@@ -9,10 +9,10 @@ object StatefulWordCount {
     val sparkconf: SparkConf = new SparkConf().setMaster("local[10]").setAppName("StatefulWordCount") //local[?] ?>=2 is needed because there is a receiver that need thread
     val ssc = new StreamingContext(sparkconf, Seconds(1))
     //it is recommended that the checkpont should be a folder on HDFS
-
+//if stateful operator is used, then checkpoint must be used
     ssc.checkpoint(".")
 
-    val lines = ssc.socketTextStream("localhost", 6789)
+    val lines = ssc.socketTextStream("localhost", 6777)
     val words = lines.flatMap(_.split(" ")).map((_,1)) //(x => (x, 1))
     val state = words.updateStateByKey[Int](updateFunction _)
 

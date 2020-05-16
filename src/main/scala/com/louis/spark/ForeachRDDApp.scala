@@ -12,9 +12,9 @@ object ForeachRDDApp {
     val ssc = new StreamingContext(sparkconf, Seconds(1))
     //it is recommended that the checkpont should be a folder on HDFS
 
-    ssc.checkpoint(".")
+//    ssc.checkpoint(".")
 
-    val lines = ssc.socketTextStream("localhost", 6788)
+    val lines = ssc.socketTextStream("localhost", 6766)
     val result = lines.flatMap(_.split(" ")).map((_,1)).reduceByKey(_+_)
 
 //    result.foreachRDD(rdd =>{
@@ -30,14 +30,12 @@ object ForeachRDDApp {
 
     result.foreachRDD(rdd =>{
       rdd.foreachPartition(partitionOfRecords =>{
-        if(partitionOfRecords.size > 0){
           val connection = createConnection()
           partitionOfRecords.foreach(pair =>{
-            val sql = "insert into wordcont(word,wordcount) values('"+pair._1+"',"+pair._2+")"
+            val sql = "insert into wordcount(word,wordcount) values('"+ pair._1 +"',"+ pair._2 +")"
             connection.createStatement().execute(sql)
           })
           connection.close()
-        }
       })
     })
 
