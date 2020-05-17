@@ -20,8 +20,6 @@ object StatefulWordCount {
     ssc.start()
     ssc.awaitTermination()
   }
-
-
   /**
    * update the current data or old data
    * @param currentValues current data
