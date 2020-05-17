@@ -650,3 +650,35 @@ Recovering from failures of the driver running the application - Metadata checkp
 
 Note that simple streaming applications without the aforementioned stateful transformations can be run without enabling checkpointing. The recovery from driver failures will also be partial in that case (some received but unprocessed data may be lost). This is often acceptable and many run Spark Streaming applications in this way. Support for non-Hadoop environments is expected to improve in the future.
 
+
+## Window Operation(windowed computations)
+
+Windowed computations, which allow you to apply transformations over a sliding window of data. The following figure illustrates this sliding window.
+
+As shown in the figure, every time the window slides over a source DStream, the source RDDs that fall within the window are combined and operated upon to produce the RDDs of the windowed DStream. In this specific case, the operation is applied over the last 3 time units of data, and slides by 2 time units. This shows that any window operation needs to specify two parameters.
+
+window length - The duration of the window (3 in the figure).
+sliding interval - The interval at which the window operation is performed (2 in the figure).
+These two parameters must be multiples of the batch interval of the source DStream (1 in the figure).
+
+Let’s illustrate the window operations with an example. Say, you want to extend the earlier example by generating word counts over the last 30 seconds of data, every 10 seconds. To do this, we have to apply the reduceByKey operation on the pairs DStream of (word, 1) pairs over the last 30 seconds of data. This is done using the operation reduceByKeyAndWindow.
+
+
+## Filter Blacklist Example
+
+Input (778,zs), (779,ls),(777,ww)
+
+Blacklist (zs,ls)
+
+(778,zs), (779,ls),(777,ww) left join (zs,ls)
+
+==>(zs,(778,zs)),(ls,(779,ls)),(ww,(777,ww))  left join (zs,true), (ls,true)
+
+==>(zs,((778,zs),true)),(ls,((779,ls),true)),(ww,((777,ww),flase))
+
+join(otherDataset, [numPartitions])	When called on datasets of type (K, V) and (K, W), returns a dataset of (K, (V, W)) pairs with all pairs of elements for each key. Outer joins are supported through leftOuterJoin, rightOuterJoin, and fullOuterJoin.
+
+
+
+
+
