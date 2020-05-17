@@ -626,5 +626,117 @@ object StatefulWordCount {
   }
 }
 ```
+## Checkpointing
+
+A streaming application must operate 24/7 and hence must be resilient to failures unrelated to the application logic (e.g., system failures, JVM crashes, etc.). For this to be possible, Spark Streaming needs to checkpoint enough information to a fault- tolerant storage system such that it can recover from failures. There are two types of data that are checkpointed.
+
+Metadata checkpointing - Saving of the information defining the streaming computation to fault-tolerant storage like HDFS. This is used to recover from failure of the node running the driver of the streaming application (discussed in detail later). Metadata includes:
+
+ Configuration - The configuration that was used to create the streaming application.
+
+ DStream operations - The set of DStream operations that define the streaming application.
+
+ Incomplete batches - Batches whose jobs are queued but have not completed yet.
+
+Data checkpointing - Saving of the generated RDDs to reliable storage. This is necessary in some stateful transformations that combine data across multiple batches. In such transformations, the generated RDDs depend on RDDs of previous batches, which causes the length of the dependency chain to keep increasing with time. To avoid such unbounded increases in recovery time (proportional to dependency chain), intermediate RDDs of stateful transformations are periodically checkpointed to reliable storage (e.g. HDFS) to cut off the dependency chains.
+
+To summarize, metadata checkpointing is primarily needed for recovery from driver failures, whereas data or RDD checkpointing is necessary even for basic functioning if stateful transformations are used.
+
+When to enable Checkpointing
+Checkpointing must be enabled for applications with any of the following requirements:
+
+Usage of stateful transformations - If either updateStateByKey or reduceByKeyAndWindow (with inverse function) is used in the application, then the checkpoint directory must be provided to allow for periodic RDD checkpointing.
+Recovering from failures of the driver running the application - Metadata checkpoints are used to recover with progress information.
+
+Note that simple streaming applications without the aforementioned stateful transformations can be run without enabling checkpointing. The recovery from driver failures will also be partial in that case (some received but unprocessed data may be lost). This is often acceptable and many run Spark Streaming applications in this way. Support for non-Hadoop environments is expected to improve in the future.
 
 
+## Window Operation(windowed computations)
+
+Windowed computations, which allow you to apply transformations over a sliding window of data. The following figure illustrates this sliding window.
+
+As shown in the figure, every time the window slides over a source DStream, the source RDDs that fall within the window are combined and operated upon to produce the RDDs of the windowed DStream. In this specific case, the operation is applied over the last 3 time units of data, and slides by 2 time units. This shows that any window operation needs to specify two parameters.
+
+window length - The duration of the window (3 in the figure).
+sliding interval - The interval at which the window operation is performed (2 in the figure).
+These two parameters must be multiples of the batch interval of the source DStream (1 in the figure).
+
+Let’s illustrate the window operations with an example. Say, you want to extend the earlier example by generating word counts over the last 30 seconds of data, every 10 seconds. To do this, we have to apply the reduceByKey operation on the pairs DStream of (word, 1) pairs over the last 30 seconds of data. This is done using the operation reduceByKeyAndWindow.
+
+
+## Filter Blacklist Example
+
+Input (778,zs), (779,ls),(777,ww)
+
+Blacklist (zs,ls)
+
+(778,zs), (779,ls),(777,ww) left join (zs,ls)
+
+==>(zs,(778,zs)),(ls,(779,ls)),(ww,(777,ww))  left join (zs,true), (ls,true)
+
+==>(zs,((778,zs),true)),(ls,((779,ls),true)),(ww,((777,ww),flase))
+
+join(otherDataset, [numPartitions])	When called on datasets of type (K, V) and (K, W), returns a dataset of (K, (V, W)) pairs with all pairs of elements for each key. Outer joins are supported through leftOuterJoin, rightOuterJoin, and fullOuterJoin.
+
+
+# Spark Streaming + Flume Integration
+
+## Approach 1: Flume-style Push-based Approach
+
+Flume is designed to push data between Flume agents. In this approach, Spark Streaming essentially sets up a receiver that acts an Avro agent for Flume, to which Flume can push the data. Here are the configuration steps.
+
+### Configure Flume
+
+```
+# example.conf: A single-node Flume configuration
+  
+# Name the components on this agent
+simple-agent-avro.sources = netcat-source
+simple-agent-avro.sinks = avro-sink
+simple-agent-avro.channels = memory-channel
+
+# Describe/configure the source
+simple-agent-avro.sources.netcat-source.type = netcat
+simple-agent-avro.sources.netcat-source.bind = localhost
+simple-agent-avro.sources.netcat-source.port = 44444
+
+# Describe the sink
+simple-agent-avro.sinks.avro-sink.type = avro
+simple-agent-avro.sinks.avro-sink.hostname = localhost
+simple-agent-avro.sinks.avro-sink.port = 41414
+
+# Use a channel which buffers events in memory
+simple-agent-avro.channels.memory-channel.type = memory
+simple-agent-avro.channels.memory-channel.capacity = 1000
+simple-agent-avro.channels.memory-channel.transactionCapacity = 100
+
+# Bind the source and sink to the channel
+simple-agent-avro.sources.netcat-source.channels = memory-channel
+simple-agent-avro.sinks.avro-sink.channel = memory-channel
+
+```
+ 
+### Application Development
+
+Add depedency
+```
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming-flume_2.11</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+```
+
+```
+    val sparkconf = new SparkConf().setMaster("local[10]").setAppName("FlumePushWordCount")
+    val ssc = new StreamingContext(sparkconf,Seconds(5))
+
+    val flumeStream = FlumeUtils.createStream(ssc,"localhost",41414)
+
+    flumeStream.map(x=> new String(x.event.getBody.array()).trim)
+        .flatMap(_.split(" ")).map((_,1)).reduceByKey(_+_)
+        .print()
+
+    ssc.start()
+    ssc.awaitTermination()
+```
