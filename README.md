@@ -679,6 +679,64 @@ Blacklist (zs,ls)
 join(otherDataset, [numPartitions])	When called on datasets of type (K, V) and (K, W), returns a dataset of (K, (V, W)) pairs with all pairs of elements for each key. Outer joins are supported through leftOuterJoin, rightOuterJoin, and fullOuterJoin.
 
 
+# Spark Streaming + Flume Integration
 
+## Approach 1: Flume-style Push-based Approach
+
+Flume is designed to push data between Flume agents. In this approach, Spark Streaming essentially sets up a receiver that acts an Avro agent for Flume, to which Flume can push the data. Here are the configuration steps.
+
+### Configure Flume
+
+```
+# example.conf: A single-node Flume configuration
+  
+# Name the components on this agent
+simple-agent-avro.sources = netcat-source
+simple-agent-avro.sinks = avro-sink
+simple-agent-avro.channels = memory-channel
+
+# Describe/configure the source
+simple-agent-avro.sources.netcat-source.type = netcat
+simple-agent-avro.sources.netcat-source.bind = localhost
+simple-agent-avro.sources.netcat-source.port = 44444
+
+# Describe the sink
+simple-agent-avro.sinks.avro-sink.type = avro
+simple-agent-avro.sinks.avro-sink.hostname = localhost
+simple-agent-avro.sinks.avro-sink.port = 41414
+
+# Use a channel which buffers events in memory
+simple-agent-avro.channels.memory-channel.type = memory
+simple-agent-avro.channels.memory-channel.capacity = 1000
+simple-agent-avro.channels.memory-channel.transactionCapacity = 100
+
+# Bind the source and sink to the channel
+simple-agent-avro.sources.netcat-source.channels = memory-channel
+simple-agent-avro.sinks.avro-sink.channel = memory-channel
+
+```
  
+### Application Development
 
+Add depedency
+```
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming-flume_2.11</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+```
+
+```
+    val sparkconf = new SparkConf().setMaster("local[10]").setAppName("FlumePushWordCount")
+    val ssc = new StreamingContext(sparkconf,Seconds(5))
+
+    val flumeStream = FlumeUtils.createStream(ssc,"localhost",41414)
+
+    flumeStream.map(x=> new String(x.event.getBody.array()).trim)
+        .flatMap(_.split(" ")).map((_,1)).reduceByKey(_+_)
+        .print()
+
+    ssc.start()
+    ssc.awaitTermination()
+```
