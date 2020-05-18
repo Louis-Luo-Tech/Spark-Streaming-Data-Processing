@@ -689,30 +689,30 @@ Flume is designed to push data between Flume agents. In this approach, Spark Str
 
 ```
 # example.conf: A single-node Flume configuration
-  
+
 # Name the components on this agent
-simple-agent-avro.sources = netcat-source
-simple-agent-avro.sinks = avro-sink
-simple-agent-avro.channels = memory-channel
+simple-agent.sources = netcat-source
+simple-agent.sinks = avro-sink
+simple-agent.channels = memory-channel
 
 # Describe/configure the source
-simple-agent-avro.sources.netcat-source.type = netcat
-simple-agent-avro.sources.netcat-source.bind = localhost
-simple-agent-avro.sources.netcat-source.port = 44444
+simple-agent.sources.netcat-source.type = netcat
+simple-agent.sources.netcat-source.bind = localhost
+simple-agent.sources.netcat-source.port = 44444
 
 # Describe the sink
-simple-agent-avro.sinks.avro-sink.type = avro
-simple-agent-avro.sinks.avro-sink.hostname = localhost
-simple-agent-avro.sinks.avro-sink.port = 41414
+simple-agent.sinks.avro-sink.type = avro
+simple-agent.sinks.avro-sink.hostname = localhost
+simple-agent.sinks.avro-sink.port = 41414
 
 # Use a channel which buffers events in memory
-simple-agent-avro.channels.memory-channel.type = memory
-simple-agent-avro.channels.memory-channel.capacity = 1000
-simple-agent-avro.channels.memory-channel.transactionCapacity = 100
+simple-agent.channels.memory-channel.type = memory
+simple-agent.channels.memory-channel.capacity = 1000
+simple-agent.channels.memory-channel.transactionCapacity = 100
 
 # Bind the source and sink to the channel
-simple-agent-avro.sources.netcat-source.channels = memory-channel
-simple-agent-avro.sinks.avro-sink.channel = memory-channel
+simple-agent.sources.netcat-source.channels = memory-channel
+simple-agent.sinks.avro-sink.channel = memory-channel
 
 ```
  
@@ -740,3 +740,47 @@ Add depedency
     ssc.start()
     ssc.awaitTermination()
 ```
+
+
+Start the application first then start the flume agent
+
+```
+flume-ng agent \
+--name simple-agent \
+--conf $FLUME_HOME/conf \
+--conf-file $FLUME_HOME/conf/flume_push_streaming.conf \
+-Dflume.root.logger=INFO,console
+```
+
+```
+$ telnet localhost 44444
+```
+
+Enter some words then the wordcount information would shown in the console in the intellij
+
+### Run the application with Spark-submit
+
+```
+spark-submit \
+--class com.louis.spark.FlumePushWordCount \
+--master "local[*]" \
+--jars /Users/xiangluo/spark-streaming-flume-assembly_2.11-2.4.5.jar \
+/Users/xiangluo/Documents/GitHub/Spark-Streaming-Data-Processing/target/Spark-Streaming-Data-Processing-1.0-SNAPSHOT.jar \
+localhost 41414
+```
+
+Then start flume agent
+
+```
+flume-ng agent \
+--name simple-agent \
+--conf $FLUME_HOME/conf \
+--conf-file $FLUME_HOME/conf/flume_push_streaming.conf \
+-Dflume.root.logger=INFO,console
+```
+
+```
+$ telnet localhost 44444
+```
+
+Enter some words then the wordcount information would shown in the console.
