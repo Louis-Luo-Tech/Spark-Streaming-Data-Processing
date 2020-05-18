@@ -770,6 +770,11 @@ Enter some words then the wordcount information would shown in the console in th
 ### Run the application with Spark-submit
 
 ```
+$ ./bin/spark-submit --packages org.apache.spark:spark-streaming-flume_2.12:2.4.5 ...
+```
+If the package is not downloaded successfully, then we can use --jars 
+
+```
 spark-submit \
 --class com.louis.spark.FlumePushWordCount \
 --master "local[*]" \
