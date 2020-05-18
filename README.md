@@ -728,10 +728,18 @@ Add depedency
 ```
 
 ```
-    val sparkconf = new SparkConf().setMaster("local[10]").setAppName("FlumePushWordCount")
+    if(args.length != 2){
+      System.err.println("Usage: FlumePushWordCount <hostname> <port>")
+      System.exit(1)
+    }
+
+    val Array(hostname,port) = args
+
+
+    val sparkconf = new SparkConf()//.setMaster("local[10]").setAppName("FlumePushWordCount")
     val ssc = new StreamingContext(sparkconf,Seconds(5))
 
-    val flumeStream = FlumeUtils.createStream(ssc,"localhost",41414)
+    val flumeStream = FlumeUtils.createStream(ssc,hostname,port.toInt)
 
     flumeStream.map(x=> new String(x.event.getBody.array()).trim)
         .flatMap(_.split(" ")).map((_,1)).reduceByKey(_+_)
