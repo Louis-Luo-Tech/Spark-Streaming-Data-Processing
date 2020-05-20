@@ -689,30 +689,30 @@ Flume is designed to push data between Flume agents. In this approach, Spark Str
 
 ```
 # example.conf: A single-node Flume configuration
-  
+
 # Name the components on this agent
-simple-agent-avro.sources = netcat-source
-simple-agent-avro.sinks = avro-sink
-simple-agent-avro.channels = memory-channel
+simple-agent.sources = netcat-source
+simple-agent.sinks = avro-sink
+simple-agent.channels = memory-channel
 
 # Describe/configure the source
-simple-agent-avro.sources.netcat-source.type = netcat
-simple-agent-avro.sources.netcat-source.bind = localhost
-simple-agent-avro.sources.netcat-source.port = 44444
+simple-agent.sources.netcat-source.type = netcat
+simple-agent.sources.netcat-source.bind = localhost
+simple-agent.sources.netcat-source.port = 44444
 
 # Describe the sink
-simple-agent-avro.sinks.avro-sink.type = avro
-simple-agent-avro.sinks.avro-sink.hostname = localhost
-simple-agent-avro.sinks.avro-sink.port = 41414
+simple-agent.sinks.avro-sink.type = avro
+simple-agent.sinks.avro-sink.hostname = localhost
+simple-agent.sinks.avro-sink.port = 41414
 
 # Use a channel which buffers events in memory
-simple-agent-avro.channels.memory-channel.type = memory
-simple-agent-avro.channels.memory-channel.capacity = 1000
-simple-agent-avro.channels.memory-channel.transactionCapacity = 100
+simple-agent.channels.memory-channel.type = memory
+simple-agent.channels.memory-channel.capacity = 1000
+simple-agent.channels.memory-channel.transactionCapacity = 100
 
 # Bind the source and sink to the channel
-simple-agent-avro.sources.netcat-source.channels = memory-channel
-simple-agent-avro.sinks.avro-sink.channel = memory-channel
+simple-agent.sources.netcat-source.channels = memory-channel
+simple-agent.sinks.avro-sink.channel = memory-channel
 
 ```
  
@@ -728,10 +728,18 @@ Add depedency
 ```
 
 ```
-    val sparkconf = new SparkConf().setMaster("local[10]").setAppName("FlumePushWordCount")
+    if(args.length != 2){
+      System.err.println("Usage: FlumePushWordCount <hostname> <port>")
+      System.exit(1)
+    }
+
+    val Array(hostname,port) = args
+
+
+    val sparkconf = new SparkConf()//.setMaster("local[10]").setAppName("FlumePushWordCount")
     val ssc = new StreamingContext(sparkconf,Seconds(5))
 
-    val flumeStream = FlumeUtils.createStream(ssc,"localhost",41414)
+    val flumeStream = FlumeUtils.createStream(ssc,hostname,port.toInt)
 
     flumeStream.map(x=> new String(x.event.getBody.array()).trim)
         .flatMap(_.split(" ")).map((_,1)).reduceByKey(_+_)
@@ -740,3 +748,195 @@ Add depedency
     ssc.start()
     ssc.awaitTermination()
 ```
+
+### Run the application
+
+Start the application first then start the flume agent
+
+```
+flume-ng agent \
+--name simple-agent \
+--conf $FLUME_HOME/conf \
+--conf-file $FLUME_HOME/conf/flume_push_streaming.conf \
+-Dflume.root.logger=INFO,console
+```
+
+```
+$ telnet localhost 44444
+```
+
+Enter some words then the wordcount information would shown in the console in the intellij
+
+### Run the application with Spark-submit
+
+```
+$ ./bin/spark-submit --packages org.apache.spark:spark-streaming-flume_2.12:2.4.5 ...
+```
+If the package is not downloaded successfully, then we can use --jars 
+
+```
+spark-submit \
+--class com.louis.spark.FlumePushWordCount \
+--master "local[*]" \
+--jars /Users/xiangluo/spark-streaming-flume-assembly_2.11-2.4.5.jar \
+/Users/xiangluo/Documents/GitHub/Spark-Streaming-Data-Processing/target/Spark-Streaming-Data-Processing-1.0-SNAPSHOT.jar \
+localhost 41414
+```
+
+Then start flume agent
+
+```
+flume-ng agent \
+--name simple-agent \
+--conf $FLUME_HOME/conf \
+--conf-file $FLUME_HOME/conf/flume_push_streaming.conf \
+-Dflume.root.logger=INFO,console
+```
+
+```
+$ telnet localhost 44444
+```
+
+Enter some words then the wordcount information would shown in the console.
+
+
+
+## Approach 2: Pull-based Approach using a Custom Sink
+
+Instead of Flume pushing data directly to Spark Streaming, this approach runs a custom Flume sink that allows the following.
+
+Flume pushes data into the sink, and the data stays buffered.
+
+Spark Streaming uses a reliable Flume receiver and transactions to pull data from the sink. Transactions succeed only after data is received and replicated by Spark Streaming.
+
+This ensures stronger reliability and fault-tolerance guarantees than the previous approach. However, this requires configuring Flume to run a custom sink. Here are the configuration steps.
+
+### Configure Flume
+
+```
+# example.conf: A single-node Flume configuration
+
+# Name the components on this agent
+simple-agent.sources = netcat-source
+simple-agent.sinks = spark-sink
+simple-agent.channels = memory-channel
+
+# Describe/configure the source
+simple-agent.sources.netcat-source.type = netcat
+simple-agent.sources.netcat-source.bind = localhost
+simple-agent.sources.netcat-source.port = 44444
+
+# Describe the sink
+simple-agent.sinks.spark-sink.type = org.apache.spark.streaming.flume.sink.SparkSink
+simple-agent.sinks.spark-sink.hostname = localhost
+simple-agent.sinks.spark-sink.port = 41414
+
+# Use a channel which buffers events in memory
+simple-agent.channels.memory-channel.type = memory
+simple-agent.channels.memory-channel.capacity = 1000
+simple-agent.channels.memory-channel.transactionCapacity = 100
+
+# Bind the source and sink to the channel
+simple-agent.sources.netcat-source.channels = memory-channel
+simple-agent.sinks.spark-sink.channel = memory-channel
+```
+
+### Application Development
+
+Add Depedencies
+
+```
+(i) Custom sink JAR: Download the JAR corresponding to the following artifact (or direct link).
+
+ groupId = org.apache.spark
+ artifactId = spark-streaming-flume-sink_2.12
+ version = 2.4.5
+(ii) Scala library JAR: Download the Scala library JAR for Scala 2.12.10. It can be found with the following artifact detail (or, direct link).
+
+ groupId = org.scala-lang
+ artifactId = scala-library
+ version = 2.12.10
+(iii) Commons Lang 3 JAR: Download the Commons Lang 3 JAR. It can be found with the following artifact detail (or, direct link).
+
+ groupId = org.apache.commons
+ artifactId = commons-lang3
+ version = 3.5
+```
+
+```
+    if(args.length != 2){
+      System.err.println("Usage: FlumePushWordCount <hostname> <port>")
+      System.exit(1)
+    }
+
+    val Array(hostname,port) = args
+
+
+    val sparkconf = new SparkConf().setMaster("local[10]").setAppName("FlumePushWordCount")
+    val ssc = new StreamingContext(sparkconf,Seconds(5))
+
+    val flumeStream = FlumeUtils.createPollingStream(ssc,hostname,port.toInt)
+
+    flumeStream.map(x=> new String(x.event.getBody.array()).trim)
+      .flatMap(_.split(" ")).map((_,1)).reduceByKey(_+_)
+      .print()
+
+    ssc.start()
+    ssc.awaitTermination()
+```
+### Run the application
+
+Start the flume agent first then run the application
+
+```
+flume-ng agent \
+--name simple-agent \
+--conf $FLUME_HOME/conf \
+--conf-file $FLUME_HOME/conf/flume_pull_streaming.conf \
+-Dflume.root.logger=INFO,console
+```
+
+```
+$ telnet localhost 44444
+```
+
+Enter some words then the wordcount information would shown in the console in the intellij
+
+
+### Solutions for common errors
+
+1) Unable to load sink type: org.apache.spark.streaming.flume.sink.SparkSink, class: org.apache.spark.streaming.flume.sink.SparkSink
+
+Solution: Download the jar packge from pom or (https://search.maven.org/artifact/org.apache.spark/spark-streaming-flume-sink_2.11) and upload the jar file to $FLUME_HOME/lib
+
+2) java.lang.NoClassDefFoundError: Could not initialize class org.apache.spark.streaming.flume.sink.EventBatch or in intellij java.lang.IllegalAccessError: tried to access method org.apache.avro.specific.SpecificData.<init>()V from class org.apache.spark.streaming.flume.sink.EventBatch
+ 
+Solution: 
+
+Download:
+
+```
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro</artifactId>
+            <version>1.8.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.avro/avro-ipc -->
+        <dependency>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro-ipc</artifactId>
+            <version>1.8.2</version>
+        </dependency>
+```
+And upload the jar file to $FLUME_HOME/lib
+
+3) java.lang.IllegalStateException: begin() called when transaction is OPEN!
+```
+        <dependency>
+            <groupId>org.scala-lang</groupId>
+            <artifactId>scala-library</artifactId>
+            <version>${scala.version}</version>
+        </dependency>
+```
+
+Download the same scala version jar package as in the pom.xml and also upload the jar file to $FLUME_HOME/lib
