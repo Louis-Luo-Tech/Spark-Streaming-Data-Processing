@@ -940,3 +940,239 @@ And upload the jar file to $FLUME_HOME/lib
 ```
 
 Download the same scala version jar package as in the pom.xml and also upload the jar file to $FLUME_HOME/lib
+
+
+
+
+
+# Spark Streaming + Kafka Integration
+
+## Approach 1: Receiver-based Approach
+
+This approach uses a Receiver to receive the data. The Receiver is implemented using the Kafka high-level consumer API. As with all receivers, the data received from Kafka through a Receiver is stored in Spark executors, and then jobs launched by Spark Streaming processes the data.
+
+However, under default configuration, this approach can lose data under failures (see receiver reliability. To ensure zero-data loss, you have to additionally enable Write-Ahead Logs in Spark Streaming (introduced in Spark 1.2). This synchronously saves all the received Kafka data into write-ahead logs on a distributed file system (e.g HDFS), so that all the data can be recovered on failure. See Deploying section in the streaming programming guide for more details on Write-Ahead Logs.
+
+### Start Kafka
+
+```
+Start zookeeper
+
+./zkServer.sh start
+
+Start Kafka Server
+
+ ./kafka-server-start.sh /Users/xiangluo/app/kafka_2.11-0.9.0.0/config/server-1.properties //9093
+
+Create a topic
+
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic kafka_streaming_topic
+
+Show all the topics
+
+./kafka-topics.sh --list --zookeeper localhost:2181
+
+Start a producer
+
+./kafka-console-producer.sh --broker-list localhost:9093 --topic kafka_streaming_topic
+
+Start a consumer
+
+./kafka-console-consumer.sh --zookeeper localhost:2181 --topic kafka_streaming_topic
+```
+ 
+### Application Development
+
+Add depedency
+```
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming-kafka-0-8_2.11</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+```
+
+```
+    if (args.length != 4) {
+      System.err.println("usage: zkQuorum, group, topics, numThreads")
+      System.exit(1)
+    }
+
+    val Array(zkQuorum, group, topics, numThreads) = args
+    val sparkconf = new SparkConf().setAppName("KafkaReceiverWordCount").setMaster("local[10]")
+    val ssc = new StreamingContext(sparkconf, Seconds(5))
+
+    //integrate kafka
+    val topicsMap = topics.split((",")).map((_, numThreads.toInt)).toMap
+    val message = KafkaUtils.createStream(ssc, zkQuorum, group, topicsMap)
+
+    message.map(_._2).flatMap(_.split(" ")).map((_,1)).reduceByKey(_+_).print()
+
+    ssc.start()
+    ssc.awaitTermination()
+```
+
+### Run the application
+
+Run the application in Intellij
+
+### Run the application with Spark-submit
+
+Maven pom.xml configuration // include all the depedencies in the jar file.
+
+```
+<build>
+        <sourceDirectory>src/main/scala</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>3.1.6</version>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+                            </filters>
+                            <artifactSet>
+                                <includes>
+                                    <include>*:*</include>
+                                </includes>
+                            </artifactSet>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+                                    <resource>reference.conf</resource>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+```
+
+spark-submit \
+--class com.louis.spark.KafkaReceiverWordCount \
+--master "local[*]" \
+--name KafkaReceiverWordCount \
+/Users/xiangluo/Documents/GitHub/Spark-Streaming-Data-Processing/target/Spark-Streaming-Data-Processing-1.0-SNAPSHOT-shaded.jar \
+localhost:2181 test kafka_streaming_topic 2
+
+
+
+## Approach 2: Direct Approach (No Receivers)
+
+Instead of using receivers to receive data, this approach periodically queries Kafka for the latest offsets in each topic+partition, and accordingly defines the offset ranges to process in each batch.
+
+This approach has the following advantages over the receiver-based approach (i.e. Approach 1).
+
+Simplified Parallelism: No need to create multiple input Kafka streams and union them. With directStream, Spark Streaming will create as many RDD partitions as there are Kafka partitions to consume, which will all read data from Kafka in parallel. So there is a one-to-one mapping between Kafka and RDD partitions, which is easier to understand and tune.
+
+Efficiency: Achieving zero-data loss in the first approach required the data to be stored in a Write-Ahead Log, which further replicated the data. This is actually inefficient as the data effectively gets replicated twice - once by Kafka, and a second time by the Write-Ahead Log. This second approach eliminates the problem as there is no receiver, and hence no need for Write-Ahead Logs. As long as you have sufficient Kafka retention, messages can be recovered from Kafka.
+
+Exactly-once semantics: The first approach uses Kafka’s high-level API to store consumed offsets in Zookeeper. This is traditionally the way to consume data from Kafka. While this approach (in combination with-write-ahead logs) can ensure zero data loss (i.e. at-least once semantics), there is a small chance some records may get consumed twice under some failures. This occurs because of inconsistencies between data reliably received by Spark Streaming and offsets tracked by Zookeeper. Hence, in this second approach, we use simple Kafka API that does not use Zookeeper. Offsets are tracked by Spark Streaming within its checkpoints. This eliminates inconsistencies between Spark Streaming and Zookeeper/Kafka, and so each record is received by Spark Streaming effectively exactly once despite failures. In order to achieve exactly-once semantics for output of your results, your output operation that saves the data to an external data store must be either idempotent, or an atomic transaction that saves results and offsets (see Semantics of output operations in the main programming guide for further information).
+
+Note that one disadvantage of this approach is that it does not update offsets in Zookeeper, hence Zookeeper-based Kafka monitoring tools will not show progress. However, you can access the offsets processed by this approach in each batch and update Zookeeper yourself (see below).
+
+### Start Kafka
+
+### Application Development
+
+Add depedency
+```
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-streaming-kafka-0-8_2.11</artifactId>
+            <version>${spark.version}</version>
+        </dependency>
+```
+
+```
+    if (args.length != 2) {
+      System.err.println("usage: brokers,topics")
+      System.exit(1)
+    }
+
+    val Array(brokers,topics) = args
+    val sparkconf = new SparkConf().setAppName("KafkaDirectWordCount").setMaster("local[10]")
+    val ssc = new StreamingContext(sparkconf, Seconds(5))
+
+    //integrate kafka
+    val topicSet = topics.split(",").toSet
+
+    val kafkaParams = Map[String, String]("metadata.broker.list" -> brokers)
+
+    val message = KafkaUtils.createDirectStream[String,String, StringDecoder,StringDecoder](ssc,kafkaParams,topicSet)
+
+    message.map(_._2).flatMap(_.split(" ")).map((_,1)).reduceByKey(_+_).print()
+
+    ssc.start()
+    ssc.awaitTermination()
+```
+
+### Run the application
+
+Run the application in Intellij
+
+### Run the application with Spark-submit
+
+spark-submit \
+--class com.louis.spark.KafkaDirectWordCount \
+--master "local[*]" \
+--name KafkaReceiverWordCount \
+/Users/xiangluo/Documents/GitHub/Spark-Streaming-Data-Processing/target/Spark-Streaming-Data-Processing-1.0-SNAPSHOT-shaded.jar \
+localhost:9093 kafka_streaming_topic
+
+
+
+### Solutions for common errors
+
+java.lang.NoSuchMethodError: net.jpountz.lz4.LZ4BlockInputStream.init exception
+
+Solution: Add Depedency
+
+<dependency>
+  <groupId>net.jpountz.lz4</groupId>
+  <artifactId>lz4</artifactId>
+  <version>1.3.0</version>
+</dependency>
+
+kafka.cluster.BrokerEndPoint cannot be cast to kafka.cluster.Broker issue
+
+Have too many Kafka dependencies loaded up, and the ones picked up at runtime aren't binary compatible with the version Spark expects.
+
+Solution:
+
+Clean up dependency and all that is needed is:
+
+spark-streaming_2.11-2.4.5,
+spark-streaming-kafka-0-10_2.11-2.4.5
