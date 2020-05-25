@@ -1,4 +1,4 @@
-package com.louis.spark.kafka;
+package com.louis.spark.kafkademos;
 
 public class KafkaProperties {
     public static final String ZK = "localhost:2181";

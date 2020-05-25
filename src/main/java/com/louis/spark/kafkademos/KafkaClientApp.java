@@ -1,4 +1,4 @@
-package com.louis.spark.kafka;
+package com.louis.spark.kafkademos;
 
 public class KafkaClientApp {
     public static void main(String[] args) {

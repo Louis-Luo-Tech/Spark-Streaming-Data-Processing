@@ -1,4 +1,4 @@
-package com.louis.spark.kafka;
+package com.louis.spark.kafkademos;
 
 import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;

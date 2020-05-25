@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3cf2bb60-bd4c-47aa-8590-c28cee86e4f7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/FlumePullWordCount.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/louis/spark/kafkademos/KafkaClientApp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/louis/spark/kafkademos/KafkaConsumer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/louis/spark/kafkademos/KafkaProducer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/louis/spark/kafkademos/KafkaProperties.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/KafkaDirectWordCount.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/KafkaReceiverWordCount.scala" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Spark_WordCount/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Spark_WordCount/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Spark_WordCount/.idea/compiler.xml" afterDir="false" />
@@ -20,11 +25,16 @@
       <change afterPath="$PROJECT_DIR$/../scalaproject/.idea/compiler.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../scalaproject/.idea/misc.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../scalaproject/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../scalaproject/README.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../scalaproject/pom.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../scalaproject/scalaproject.iml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../scalaproject/src/main/scala/com/louis/scalaproject/chapter1/Comment.scala" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../scalaproject/src/main/scala/com/louis/scalaproject/chapter1/Hello.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../scalaproject/src/main/scala/com/louis/scalaproject/chapter1/LookSourceCode.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../scalaproject/src/main/scala/com/louis/scalaproject/chapter1/printDemo.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../scalaproject/src/main/scala/com/louis/scalaproject/chapter1/vars/VarDemo01.scala" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../scalaproject/src/main/scala/com/louis/scalaproject/chapter1/vars/VarDemo02.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../scalaproject/src/main/scala/com/louis/scalaproject/chapter2/datatype/TypeDemo01.scala" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../scalaproject/target/classes/com/louis/scalaproject/chapter1/Hello$.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../scalaproject/target/classes/com/louis/scalaproject/chapter1/Hello.class" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../scalaproject/target/classes/com/louis/scalaproject/chapter1/vars/VarDemo02$.class" afterDir="false" />
@@ -32,19 +42,15 @@
       <change beforePath="$PROJECT_DIR$/../Kafka" beforeDir="false" afterPath="$PROJECT_DIR$/../Kafka" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Notes" beforeDir="false" afterPath="$PROJECT_DIR$/../Notes" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Scala_Spark_DataFrame" beforeDir="false" afterPath="$PROJECT_DIR$/../Scala_Spark_DataFrame" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/scala_compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/scala_compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/scala/com/louis/spark/FlumePushWordCount.scala" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/FlumePushWordCount.scala" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/Spark-Streaming-Data-Processing.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/louis/spark/FlumePushWordCount$$anonfun$main$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/louis/spark/FlumePushWordCount$$anonfun$main$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/louis/spark/FlumePushWordCount$$anonfun$main$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/louis/spark/FlumePushWordCount$$anonfun$main$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/louis/spark/FlumePushWordCount$$anonfun$main$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/louis/spark/FlumePushWordCount$$anonfun$main$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/louis/spark/FlumePushWordCount$$anonfun$main$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/louis/spark/FlumePushWordCount$$anonfun$main$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/louis/spark/FlumePushWordCount$.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/louis/spark/FlumePushWordCount$.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/louis/spark/kafka/KafkaClientApp.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/louis/spark/kafka/KafkaConsumer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/louis/spark/kafka/KafkaProducer.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/louis/spark/kafka/KafkaProperties.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/louis/spark/kafka/KafkaClientApp.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/louis/spark/kafka/KafkaConsumer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/louis/spark/kafka/KafkaProducer.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/louis/spark/kafka/KafkaProperties.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Spark-Streaming-Data-Processing-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/Spark-Streaming-Data-Processing-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/.idea/modules/Spark-Streaming-Realtime-Processing-Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/.idea/modules/Spark-Streaming-Realtime-Processing-Project.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/scala-2.12/sbt-1.0/update/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/scala-2.12/sbt-1.0/update/update_cache_2.12/output" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/streams/_global/update/_global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/streams/_global/update/_global/streams/out" afterDir="false" />
@@ -129,11 +135,11 @@
       <recent name="$PROJECT_DIR$/src/main/java/com/louis/spark/kafka" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.FlumePullWordCount">
+  <component name="RunManager" selected="Application.KafkaDirectWordCount">
     <configuration name="FlumePullWordCount" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="com.louis.spark.FlumePullWordCount" />
       <module name="Spark-Streaming-Data-Processing" />
-      <option name="PROGRAM_PARAMETERS" value="localhost 41414" />
+      <option name="PROGRAM_PARAMETERS" value="localhost:2181 test kafka_streaming_topic 2" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.louis.spark.*" />
@@ -158,9 +164,24 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StatefulWordCount" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="com.louis.spark.StatefulWordCount" />
+    <configuration name="KafkaDirectWordCount" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.louis.spark.KafkaDirectWordCount" />
       <module name="Spark-Streaming-Data-Processing" />
+      <option name="PROGRAM_PARAMETERS" value="localhost:9093 kafka_streaming_topic1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.louis.spark.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="KafkaReceiverWordCount" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.louis.spark.KafkaReceiverWordCount" />
+      <module name="Spark-Streaming-Data-Processing" />
+      <option name="PROGRAM_PARAMETERS" value="localhost:2181 test kafka_streaming_topic1 10" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.louis.spark.*" />
@@ -184,33 +205,20 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="TransformApp" type="Application" factoryName="Application" temporary="true">
-      <option name="MAIN_CLASS_NAME" value="com.louis.spark.TransformApp" />
-      <module name="Spark-Streaming-Data-Processing" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.louis.spark.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Application.FlumePushWordCount" />
-      <item itemvalue="Application.StatefulWordCount" />
       <item itemvalue="Application.Test" />
-      <item itemvalue="Application.TransformApp" />
       <item itemvalue="Application.FlumePullWordCount" />
+      <item itemvalue="Application.KafkaReceiverWordCount" />
+      <item itemvalue="Application.KafkaDirectWordCount" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.KafkaDirectWordCount" />
+        <item itemvalue="Application.KafkaReceiverWordCount" />
         <item itemvalue="Application.FlumePullWordCount" />
         <item itemvalue="Application.FlumePushWordCount" />
         <item itemvalue="Application.Test" />
-        <item itemvalue="Application.TransformApp" />
-        <item itemvalue="Application.StatefulWordCount" />
       </list>
     </recent_temporary>
   </component>
@@ -236,7 +244,17 @@
       <workItem from="1589307041841" duration="563000" />
       <workItem from="1589307623181" duration="13352000" />
       <workItem from="1589448434656" duration="16135000" />
-      <workItem from="1589758574492" duration="13372000" />
+      <workItem from="1589758574492" duration="13375000" />
+      <workItem from="1590363955906" duration="10954000" />
+      <workItem from="1590384672652" duration="87000" />
+      <workItem from="1590384777600" duration="128000" />
+      <workItem from="1590384919207" duration="192000" />
+      <workItem from="1590385124202" duration="543000" />
+      <workItem from="1590385683236" duration="216000" />
+      <workItem from="1590385913710" duration="914000" />
+      <workItem from="1590386843671" duration="1122000" />
+      <workItem from="1590387983550" duration="310000" />
+      <workItem from="1590388341570" duration="450000" />
     </task>
     <servers />
   </component>
@@ -251,14 +269,17 @@
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
     <state x="2261" y="234" key="#Project_Structure/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589356097061" />
-    <state x="2378" y="306" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1589767981590">
-      <screen x="1680" y="23" width="1920" height="1021" />
+    <state x="611" y="291" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog" timestamp="1590382692784">
+      <screen x="0" y="0" width="1680" height="1050" />
     </state>
+    <state x="611" y="291" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590382692784" />
     <state x="2378" y="299" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/0.0.1680.1050/1680.0.1920.1080@1680.0.1920.1080" timestamp="1589700313033" />
     <state x="2378" y="306" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589767981590" />
-    <state x="1680" y="126" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1589769588996">
-      <screen x="1680" y="23" width="1920" height="1021" />
+    <state x="394" y="161" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590388500619">
+      <screen x="0" y="0" width="1680" height="1050" />
     </state>
+    <state x="394" y="161" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590388500619" />
+    <state x="323" y="179" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1050/1680.23.1920.1021@0.0.1680.1050" timestamp="1590366890971" />
     <state x="1680" y="126" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589769588996" />
     <state x="1807" y="343" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1589663393297">
       <screen x="1680" y="23" width="1920" height="1021" />
@@ -272,30 +293,62 @@
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
     <state x="2214" y="311" width="423" height="276" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589356120146" />
-    <state width="1878" height="224" key="GridCell.Tab.0.bottom" timestamp="1589776072377">
-      <screen x="1680" y="0" width="1920" height="1080" />
+    <state width="1638" height="278" key="GridCell.Tab.0.bottom" timestamp="1590388719852">
+      <screen x="0" y="0" width="1680" height="1050" />
     </state>
+    <state width="1638" height="278" key="GridCell.Tab.0.bottom/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590388719852" />
     <state width="1878" height="224" key="GridCell.Tab.0.bottom/0.0.1680.1050/1680.0.1920.1080@1680.0.1920.1080" timestamp="1589776072377" />
+    <state width="1638" height="574" key="GridCell.Tab.0.bottom/0.0.1680.1050/1680.23.1920.1021@0.0.1680.1050" timestamp="1590386288913" />
+    <state width="1638" height="445" key="GridCell.Tab.0.bottom/0.0.1680.1050/1680.23.1920.1057@0.0.1680.1050" timestamp="1590387969436" />
+    <state width="1398" height="224" key="GridCell.Tab.0.bottom/0.23.1440.841@0.23.1440.841" timestamp="1590126783064" />
     <state width="1765" height="244" key="GridCell.Tab.0.bottom/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589771431094" />
     <state width="1638" height="511" key="GridCell.Tab.0.bottom/0.23.1680.991/1680.23.1920.1057@0.23.1680.991" timestamp="1589694927421" />
-    <state width="1878" height="224" key="GridCell.Tab.0.center" timestamp="1589776072376">
-      <screen x="1680" y="0" width="1920" height="1080" />
+    <state width="1638" height="278" key="GridCell.Tab.0.center" timestamp="1590388719849">
+      <screen x="0" y="0" width="1680" height="1050" />
     </state>
+    <state width="1638" height="278" key="GridCell.Tab.0.center/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590388719849" />
     <state width="1878" height="224" key="GridCell.Tab.0.center/0.0.1680.1050/1680.0.1920.1080@1680.0.1920.1080" timestamp="1589776072376" />
+    <state width="1638" height="574" key="GridCell.Tab.0.center/0.0.1680.1050/1680.23.1920.1021@0.0.1680.1050" timestamp="1590386288912" />
+    <state width="1638" height="445" key="GridCell.Tab.0.center/0.0.1680.1050/1680.23.1920.1057@0.0.1680.1050" timestamp="1590387969434" />
+    <state width="1398" height="224" key="GridCell.Tab.0.center/0.23.1440.841@0.23.1440.841" timestamp="1590126783063" />
     <state width="1765" height="244" key="GridCell.Tab.0.center/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589771431093" />
     <state width="1638" height="511" key="GridCell.Tab.0.center/0.23.1680.991/1680.23.1920.1057@0.23.1680.991" timestamp="1589694927419" />
-    <state width="1878" height="224" key="GridCell.Tab.0.left" timestamp="1589776072375">
-      <screen x="1680" y="0" width="1920" height="1080" />
+    <state width="1638" height="278" key="GridCell.Tab.0.left" timestamp="1590388719848">
+      <screen x="0" y="0" width="1680" height="1050" />
     </state>
+    <state width="1638" height="278" key="GridCell.Tab.0.left/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590388719848" />
     <state width="1878" height="224" key="GridCell.Tab.0.left/0.0.1680.1050/1680.0.1920.1080@1680.0.1920.1080" timestamp="1589776072375" />
+    <state width="1638" height="574" key="GridCell.Tab.0.left/0.0.1680.1050/1680.23.1920.1021@0.0.1680.1050" timestamp="1590386288911" />
+    <state width="1638" height="445" key="GridCell.Tab.0.left/0.0.1680.1050/1680.23.1920.1057@0.0.1680.1050" timestamp="1590387969433" />
+    <state width="1398" height="224" key="GridCell.Tab.0.left/0.23.1440.841@0.23.1440.841" timestamp="1590126783063" />
     <state width="1765" height="244" key="GridCell.Tab.0.left/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589771431093" />
     <state width="1638" height="511" key="GridCell.Tab.0.left/0.23.1680.991/1680.23.1920.1057@0.23.1680.991" timestamp="1589694927419" />
-    <state width="1878" height="224" key="GridCell.Tab.0.right" timestamp="1589776072377">
-      <screen x="1680" y="0" width="1920" height="1080" />
+    <state width="1638" height="278" key="GridCell.Tab.0.right" timestamp="1590388719850">
+      <screen x="0" y="0" width="1680" height="1050" />
     </state>
+    <state width="1638" height="278" key="GridCell.Tab.0.right/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590388719850" />
     <state width="1878" height="224" key="GridCell.Tab.0.right/0.0.1680.1050/1680.0.1920.1080@1680.0.1920.1080" timestamp="1589776072377" />
+    <state width="1638" height="574" key="GridCell.Tab.0.right/0.0.1680.1050/1680.23.1920.1021@0.0.1680.1050" timestamp="1590386288913" />
+    <state width="1638" height="445" key="GridCell.Tab.0.right/0.0.1680.1050/1680.23.1920.1057@0.0.1680.1050" timestamp="1590387969435" />
+    <state width="1398" height="224" key="GridCell.Tab.0.right/0.23.1440.841@0.23.1440.841" timestamp="1590126783063" />
     <state width="1765" height="244" key="GridCell.Tab.0.right/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589771431094" />
     <state width="1638" height="511" key="GridCell.Tab.0.right/0.23.1680.991/1680.23.1920.1057@0.23.1680.991" timestamp="1589694927420" />
+    <state width="1638" height="363" key="GridCell.Tab.1.bottom" timestamp="1590388439161">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1638" height="363" key="GridCell.Tab.1.bottom/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590388439161" />
+    <state width="1638" height="363" key="GridCell.Tab.1.center" timestamp="1590388439159">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1638" height="363" key="GridCell.Tab.1.center/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590388439159" />
+    <state width="1638" height="363" key="GridCell.Tab.1.left" timestamp="1590388439158">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1638" height="363" key="GridCell.Tab.1.left/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590388439158" />
+    <state width="1638" height="363" key="GridCell.Tab.1.right" timestamp="1590388439160">
+      <screen x="0" y="0" width="1680" height="1050" />
+    </state>
+    <state width="1638" height="363" key="GridCell.Tab.1.right/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590388439160" />
     <state x="2199" y="230" key="Maven.ArtifactSearchDialog" timestamp="1589307365492">
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
@@ -309,9 +362,10 @@
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
     <state x="2668" y="304" width="540" height="524" key="StructurePopup/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589401770777" />
-    <state x="2354" y="401" key="com.intellij.ide.util.TipDialog" timestamp="1589758576231">
-      <screen x="1680" y="23" width="1920" height="1021" />
+    <state x="590" y="389" key="com.intellij.ide.util.TipDialog" timestamp="1590387982505">
+      <screen x="0" y="0" width="1680" height="1050" />
     </state>
+    <state x="590" y="389" key="com.intellij.ide.util.TipDialog/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590387982505" />
     <state x="2354" y="401" key="com.intellij.ide.util.TipDialog/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589758576231" />
     <state x="2069" y="237" key="new project wizard" timestamp="1589782053463">
       <screen x="1680" y="0" width="1920" height="1080" />
