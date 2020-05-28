@@ -1176,3 +1176,212 @@ Clean up dependency and all that is needed is:
 
 spark-streaming_2.11-2.4.5,
 spark-streaming-kafka-0-10_2.11-2.4.5
+
+
+
+# Spark Streaming + Flume + Kafka Integration
+## Print log with Log4j
+
+Code
+
+```
+import org.apache.log4j.Logger;
+
+public class LoggerGenerator {
+
+    private static Logger logger = Logger.getLogger(LoggerGenerator.class.getName());
+
+    public static void main(String[] args) throws Exception{
+
+        int index = 0;
+        while(true){
+            Thread.sleep(1000);
+            logger.info("value: " + index ++);
+        }
+    }
+}
+```
+
+Log configuration
+
+```
+log4j.rootLogger=INFO,stdout,flume
+
+log4j.appender.stdout = org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.target = System.out
+log4j.appender.stdout.layout = org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern = %d{yyyy-MM-dd HH:mm:ss,SSS} [%t] [%c] [%p] - %m%n
+```
+
+Run the LoggerGenerator.java, then there will be log information.
+
+
+## Use Flume to collect the log information from log4j
+
+### Flume Configuration
+
+```
+# Name the components on this agent
+agent1.sources = avro-source
+agent1.sinks = log-sink
+agent1.channels = logger-channel
+
+# Describe/config the source
+agent1.sources.avro-source.type = avro
+agent1.sources.avro-source.bind = localhost
+agent1.sources.avro-source.port = 41414
+
+# Describe the sink
+agent1.sinks.log-sink.type = logger
+
+# Define channel
+agent1.channels.logger-channel.type = memory
+
+# Bind the source and sink to the channel
+agent1.sources.avro-source.channels = logger-channel
+agent1.sinks.log-sink.channel = logger-channel
+```
+
+Start Flume
+
+```
+flume-ng agent \
+--name agent1 \
+--conf $FLUME_HOME/conf \
+--conf-file $FLUME_HOME/conf/streaming.conf \
+-Dflume.root.logger=INFO,console
+```
+
+Add more configuration in log4j.properties
+
+```
+log4j.rootLogger=INFO,stdout,flume
+
+log4j.appender.stdout = org.apache.log4j.ConsoleAppender
+log4j.appender.stdout.target = System.out
+log4j.appender.stdout.layout = org.apache.log4j.PatternLayout
+log4j.appender.stdout.layout.ConversionPattern = %d{yyyy-MM-dd HH:mm:ss,SSS} [%t] [%c] [%p] - %m%n
+
+
+log4j.appender.flume = org.apache.flume.clients.log4jappender.Log4jAppender
+log4j.appender.flume.Hostname = localhost
+log4j.appender.flume.Port = 41414
+log4j.appender.flume.UnsafeMode = true
+```
+
+After you run the application, an error you will get:
+
+java.lang.ClassNotFoundException: org.apache.flume.clients.log4jappender.Log4jAppender
+
+Solution: add depedency
+
+```
+        <dependency>
+            <groupId>org.apache.flume.flume-ng-clients</groupId>
+            <artifactId>flume-ng-log4jappender</artifactId>
+            <version>1.6.0</version>
+        </dependency>
+
+```
+
+
+## Use Kakfasink in Flume to transform the data to Kafka
+
+### kafka Server Configuration
+
+Start Zookeeper
+
+```
+./zkServer.sh start
+```
+Start Kafka Server
+```
+./kafka-server-start.sh $KAFKA_HOME/config/server.properties
+```
+
+Check all the existing topics
+```
+./kafka-topics.sh --list --zookeeper localhost:2181
+```
+
+Create a new topic
+```
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic streamingtopic
+```
+
+Create a new Kafka Consumer
+```
+./kafka-console-consumer.sh --zookeeper localhost:2181 --topic streamingtopic --from-beginning
+```
+
+### Flume Configuration
+
+```
+# Name the components on this agent
+agent1.sources = avro-source
+agent1.sinks = kafka-sink
+agent1.channels = logger-channel
+
+# Describe/config the source
+agent1.sources.avro-source.type = avro
+agent1.sources.avro-source.bind = localhost
+agent1.sources.avro-source.port = 41414
+
+# Describe the sink
+agent1.sinks.kafka-sink.type = org.apache.flume.sink.kafka.KafkaSink
+agent1.sinks.kafka-sink.topic = streamingtopic
+agent1.sinks.kafka-sink.brokerList = localhost:9092
+agent1.sinks.kafka-sink.batchSize = 20
+agent1.sinks.kafka-sink.requiredAcks = 1
+
+
+# Define channel
+agent1.channels.logger-channel.type = memory
+
+# Bind the source and sink to the channel
+agent1.sources.avro-source.channels = logger-channel
+agent1.sinks.kafka-sink.channel = logger-channel
+```
+
+
+Start Flume
+
+```
+flume-ng agent \
+--name agent1 \
+--conf $FLUME_HOME/conf \
+--conf-file $FLUME_HOME/conf/streaming2.conf \
+-Dflume.root.logger=INFO,console
+```
+
+
+### Run log generator application, then Kakfa Consumer will get all the data from Flume Sink
+
+
+## Spark Streaming consumes the data in Kafka Server
+
+Here we use Receiver approach
+
+```
+    if (args.length != 4) {
+      System.err.println("usage: zkQuorum, group, topics, numThreads")
+      System.exit(1)
+    }
+
+    val Array(zkQuorum, group, topics, numThreads) = args
+    val sparkconf = new SparkConf().setAppName("KafkaStreaming").setMaster("local[10]")
+    val ssc = new StreamingContext(sparkconf, Seconds(5))
+
+    //integrate kafka
+    val topicsMap = topics.split((",")).map((_, numThreads.toInt)).toMap
+    val message = KafkaUtils.createStream(ssc, zkQuorum, group, topicsMap)
+
+    message.map(_._2).count().print()
+
+    ssc.start()
+    ssc.awaitTermination()
+```
+
+Program arguments: 
+
+localhost:2181 test streamingtopic 1
