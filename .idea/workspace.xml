@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3cf2bb60-bd4c-47aa-8590-c28cee86e4f7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/KafkaStreaming.scala" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Spark_WordCount/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Spark_WordCount/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Spark_WordCount/.idea/compiler.xml" afterDir="false" />
@@ -38,11 +37,6 @@
       <change beforePath="$PROJECT_DIR$/../Notes" beforeDir="false" afterPath="$PROJECT_DIR$/../Notes" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Scala_Spark_DataFrame" beforeDir="false" afterPath="$PROJECT_DIR$/../Scala_Spark_DataFrame" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/LoggerGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/LoggerGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/resources/log4j.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/log4j.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/LoggerGenerator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/LoggerGenerator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/log4j.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/log4j.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/.idea/modules/Spark-Streaming-Realtime-Processing-Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/.idea/modules/Spark-Streaming-Realtime-Processing-Project.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/scala-2.12/sbt-1.0/update/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/scala-2.12/sbt-1.0/update/update_cache_2.12/output" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/streams/_global/update/_global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/streams/_global/update/_global/streams/out" afterDir="false" />
@@ -242,7 +236,7 @@
       <workItem from="1590386843671" duration="1122000" />
       <workItem from="1590387983550" duration="310000" />
       <workItem from="1590388341570" duration="3306000" />
-      <workItem from="1590479044405" duration="3151000" />
+      <workItem from="1590479044405" duration="5069000" />
     </task>
     <servers />
   </component>
@@ -264,10 +258,10 @@
     <state x="611" y="291" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590382692784" />
     <state x="2378" y="299" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/0.0.1680.1050/1680.0.1920.1080@1680.0.1920.1080" timestamp="1589700313033" />
     <state x="2378" y="306" key="#com.intellij.codeInsight.editorActions.RestoreReferencesDialog/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589767981590" />
-    <state x="394" y="161" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590485135582">
+    <state x="394" y="161" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590581271475">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="394" y="161" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590485135582" />
+    <state x="394" y="161" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590581271475" />
     <state x="323" y="179" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1680.1050/1680.23.1920.1021@0.0.1680.1050" timestamp="1590366890971" />
     <state x="1680" y="126" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589769588996" />
     <state x="1807" y="343" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1589663393297">
