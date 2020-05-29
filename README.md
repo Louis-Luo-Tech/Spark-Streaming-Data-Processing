@@ -1467,5 +1467,57 @@ Some samples:
 
 ### Use timed scheduling tool to generate the log every minute.
 
+Recommandation:
+
+```
+crontab -e
+```
+
+## Use Flume to collect the log
+
+
+configuration file
+
+```
+# Name the components on this agent
+a1.sources = r1
+a1.sinks = k1
+a1.channels = c1
+
+# Describe/configure the source
+a1.sources.r1.type = exec
+a1.sources.r1.command = tail -F /Users/xiangluo/data/log/access.log
+a1.sources.r1.shell = /bin/sh -c
+
+# Describe the sink
+a1.sinks.k1.type = logger
+
+# Use a channel which buffers events in memory
+a1.channels.c1.type = memory
+a1.channels.c1.capacity = 1000
+a1.channels.c1.transactionCapacity = 100
+
+# Bind the source and sink to the channel
+a1.sources.r1.channels = c1
+a1.sinks.k1.channel = c1
+```
+
+
+Run Flume
+```
+flume-ng agent \
+--name a1 \
+--conf $FLUME_HOME/conf \
+--conf-file $FLUME_HOME/conf/exec_memory_log.conf \
+-Dflume.root.logger=INFO,console
+```
+
+
+
+
+
+
+
+
 
 
