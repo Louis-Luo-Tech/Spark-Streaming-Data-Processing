@@ -8,12 +8,15 @@ import random
 import time
 
 url_paths = [
-        "product/nintendo-switch-console-with-neon-red-blue-joy-con/13817625",
-        "product/playstation-4-pro-1tb-console/12910052",
-        "product/xbox-one-s-1tb-star-wars-jedi-fallen-order-deluxe-edition-bundle/14056023",
-        "category/samsung-phones/505988",
-        "services/geek-squad-services/bltb5f906bfb57d7744",
-        "search?search=games"
+        "product/13817625.html",
+        "product/12910052.html",
+        "product/14056023.html",
+        "product/14610854.html",
+        "product/14056024.html",
+        "product/13817626.html",
+        "category/samsung-phones/505988.html",
+        "services/geek-squad-services/bltb5f906bfb57d7744.html",
+        "search?search=games.html"
         ]
 ip_slices = [43,167,43,132,232,124,10,29,143,30,46,55,63,72,87,98]
 
@@ -49,11 +52,11 @@ def sample_status_code():
     return random.sample(status_codes,1)[0]
 
 def generate_log(count = 10):
-    time_str = time.strftime("%Y-%M-%D %H:%M:%S",time.localtime())
+    time_str = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime())
     f = open("/Users/xiangluo/data/log/access.log","w+")
     
     while count >=1:
-        query_log = "{ip}\t{local_time}\t\"GET \{url} HTTP/1.1\"\t{status_code}\t{referer}".format(ip=sample_ip(),url=sample_url(),
+        query_log = "{ip}\t{local_time}\t\"GET /{url} HTTP/1.1\"\t{status_code}\t{referer}".format(ip=sample_ip(),url=sample_url(),
                      referer= sample_referer(),status_code=sample_status_code(),local_time=time_str)
         print(query_log)
         f.write(query_log + "\n")

@@ -2,10 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3cf2bb60-bd4c-47aa-8590-c28cee86e4f7" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/log.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/KafkaDirectWordCount.scala" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/KafkaReceiverWordCount.scala" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/project/StreamingApp.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/project/domain/ClickLog.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/project/spark/StreamingApp.scala" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/scala/com/louis/spark/project/utils/DateUtils.scala" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Spark_WordCount/.idea/.gitignore" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Spark_WordCount/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/../Spark_WordCount/.idea/compiler.xml" afterDir="false" />
@@ -41,6 +42,12 @@
       <change beforePath="$PROJECT_DIR$/../Notes" beforeDir="false" afterPath="$PROJECT_DIR$/../Notes" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Scala_Spark_DataFrame" beforeDir="false" afterPath="$PROJECT_DIR$/../Scala_Spark_DataFrame" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/generate_log.py" beforeDir="false" afterPath="$PROJECT_DIR$/generate_log.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/scala/com/louis/spark/project/StreamingApp.scala" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/louis/spark/project/StreamingApp$$anonfun$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/louis/spark/project/StreamingApp$$anonfun$main$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/louis/spark/project/StreamingApp$.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/louis/spark/project/StreamingApp.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/.idea/modules/Spark-Streaming-Realtime-Processing-Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/.idea/modules/Spark-Streaming-Realtime-Processing-Project.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/scala-2.12/sbt-1.0/update/update_cache_2.12/output" beforeDir="false" afterPath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/scala-2.12/sbt-1.0/update/update_cache_2.12/output" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/streams/_global/update/_global/streams/out" beforeDir="false" afterPath="$PROJECT_DIR$/../SparkStreaming-Realtime-Processing-Project/project/target/streams/_global/update/_global/streams/out" afterDir="false" />
@@ -75,8 +82,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Scala Object" />
         <option value="Class" />
+        <option value="Scala Object" />
       </list>
     </option>
   </component>
@@ -127,6 +134,19 @@
     </key>
   </component>
   <component name="RunManager" selected="Application.StreamingApp">
+    <configuration name="DateUtils" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.louis.spark.project.utils.DateUtils" />
+      <module name="Spark-Streaming-Data-Processing" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.louis.spark.project.utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="KafkaDirectWordCount" type="Application" factoryName="Application" temporary="true">
       <option name="MAIN_CLASS_NAME" value="com.louis.spark.KafkaDirectWordCount" />
       <module name="Spark-Streaming-Data-Processing" />
@@ -177,12 +197,12 @@
       </method>
     </configuration>
     <configuration name="StreamingApp" type="Application" factoryName="Application">
-      <option name="MAIN_CLASS_NAME" value="com.louis.spark.project.StreamingApp" />
+      <option name="MAIN_CLASS_NAME" value="com.louis.spark.project.spark.StreamingApp" />
       <module name="Spark-Streaming-Data-Processing" />
       <option name="PROGRAM_PARAMETERS" value="localhost:2181 test streamingtopic 10" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.louis.spark.project.*" />
+          <option name="PATTERN" value="com.louis.spark.project.spark.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -196,9 +216,11 @@
       <item itemvalue="Application.KafkaDirectWordCount" />
       <item itemvalue="Application.LoggerGenerator" />
       <item itemvalue="Application.KafkaStreaming" />
+      <item itemvalue="Application.DateUtils" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.DateUtils" />
         <item itemvalue="Application.KafkaStreaming" />
         <item itemvalue="Application.LoggerGenerator" />
         <item itemvalue="Application.KafkaDirectWordCount" />
@@ -241,6 +263,7 @@
       <workItem from="1590388341570" duration="3306000" />
       <workItem from="1590479044405" duration="5898000" />
       <workItem from="1590760272127" duration="1041000" />
+      <workItem from="1590877550619" duration="2899000" />
     </task>
     <servers />
   </component>
@@ -280,44 +303,48 @@
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
     <state x="2214" y="311" width="423" height="276" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.classes/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589356120146" />
-    <state width="1638" height="364" key="GridCell.Tab.0.bottom" timestamp="1590760628367">
+    <state width="1638" height="423" key="GridCell.Tab.0.bottom" timestamp="1590880753365">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="364" key="GridCell.Tab.0.bottom/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590760628367" />
+    <state width="1638" height="423" key="GridCell.Tab.0.bottom/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590880753365" />
     <state width="1878" height="224" key="GridCell.Tab.0.bottom/0.0.1680.1050/1680.0.1920.1080@1680.0.1920.1080" timestamp="1589776072377" />
     <state width="1638" height="413" key="GridCell.Tab.0.bottom/0.0.1680.1050/1680.23.1920.1021@0.0.1680.1050" timestamp="1590483147243" />
     <state width="1638" height="445" key="GridCell.Tab.0.bottom/0.0.1680.1050/1680.23.1920.1057@0.0.1680.1050" timestamp="1590387969436" />
     <state width="1398" height="224" key="GridCell.Tab.0.bottom/0.23.1440.841@0.23.1440.841" timestamp="1590126783064" />
+    <state width="1638" height="480" key="GridCell.Tab.0.bottom/0.23.1680.1027/1680.23.1920.1021@0.23.1680.1027" timestamp="1590793731458" />
     <state width="1765" height="244" key="GridCell.Tab.0.bottom/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589771431094" />
     <state width="1638" height="511" key="GridCell.Tab.0.bottom/0.23.1680.991/1680.23.1920.1057@0.23.1680.991" timestamp="1589694927421" />
-    <state width="1638" height="364" key="GridCell.Tab.0.center" timestamp="1590760628365">
+    <state width="1638" height="423" key="GridCell.Tab.0.center" timestamp="1590880753364">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="364" key="GridCell.Tab.0.center/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590760628365" />
+    <state width="1638" height="423" key="GridCell.Tab.0.center/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590880753364" />
     <state width="1878" height="224" key="GridCell.Tab.0.center/0.0.1680.1050/1680.0.1920.1080@1680.0.1920.1080" timestamp="1589776072376" />
     <state width="1638" height="413" key="GridCell.Tab.0.center/0.0.1680.1050/1680.23.1920.1021@0.0.1680.1050" timestamp="1590483147242" />
     <state width="1638" height="445" key="GridCell.Tab.0.center/0.0.1680.1050/1680.23.1920.1057@0.0.1680.1050" timestamp="1590387969434" />
     <state width="1398" height="224" key="GridCell.Tab.0.center/0.23.1440.841@0.23.1440.841" timestamp="1590126783063" />
+    <state width="1638" height="480" key="GridCell.Tab.0.center/0.23.1680.1027/1680.23.1920.1021@0.23.1680.1027" timestamp="1590793731457" />
     <state width="1765" height="244" key="GridCell.Tab.0.center/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589771431093" />
     <state width="1638" height="511" key="GridCell.Tab.0.center/0.23.1680.991/1680.23.1920.1057@0.23.1680.991" timestamp="1589694927419" />
-    <state width="1638" height="364" key="GridCell.Tab.0.left" timestamp="1590760628364">
+    <state width="1638" height="423" key="GridCell.Tab.0.left" timestamp="1590880753363">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="364" key="GridCell.Tab.0.left/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590760628364" />
+    <state width="1638" height="423" key="GridCell.Tab.0.left/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590880753363" />
     <state width="1878" height="224" key="GridCell.Tab.0.left/0.0.1680.1050/1680.0.1920.1080@1680.0.1920.1080" timestamp="1589776072375" />
     <state width="1638" height="413" key="GridCell.Tab.0.left/0.0.1680.1050/1680.23.1920.1021@0.0.1680.1050" timestamp="1590483147241" />
     <state width="1638" height="445" key="GridCell.Tab.0.left/0.0.1680.1050/1680.23.1920.1057@0.0.1680.1050" timestamp="1590387969433" />
     <state width="1398" height="224" key="GridCell.Tab.0.left/0.23.1440.841@0.23.1440.841" timestamp="1590126783063" />
+    <state width="1638" height="480" key="GridCell.Tab.0.left/0.23.1680.1027/1680.23.1920.1021@0.23.1680.1027" timestamp="1590793731456" />
     <state width="1765" height="244" key="GridCell.Tab.0.left/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589771431093" />
     <state width="1638" height="511" key="GridCell.Tab.0.left/0.23.1680.991/1680.23.1920.1057@0.23.1680.991" timestamp="1589694927419" />
-    <state width="1638" height="364" key="GridCell.Tab.0.right" timestamp="1590760628366">
+    <state width="1638" height="423" key="GridCell.Tab.0.right" timestamp="1590880753365">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state width="1638" height="364" key="GridCell.Tab.0.right/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590760628366" />
+    <state width="1638" height="423" key="GridCell.Tab.0.right/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590880753365" />
     <state width="1878" height="224" key="GridCell.Tab.0.right/0.0.1680.1050/1680.0.1920.1080@1680.0.1920.1080" timestamp="1589776072377" />
     <state width="1638" height="413" key="GridCell.Tab.0.right/0.0.1680.1050/1680.23.1920.1021@0.0.1680.1050" timestamp="1590483147242" />
     <state width="1638" height="445" key="GridCell.Tab.0.right/0.0.1680.1050/1680.23.1920.1057@0.0.1680.1050" timestamp="1590387969435" />
     <state width="1398" height="224" key="GridCell.Tab.0.right/0.23.1440.841@0.23.1440.841" timestamp="1590126783063" />
+    <state width="1638" height="480" key="GridCell.Tab.0.right/0.23.1680.1027/1680.23.1920.1021@0.23.1680.1027" timestamp="1590793731457" />
     <state width="1765" height="244" key="GridCell.Tab.0.right/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589771431094" />
     <state width="1638" height="511" key="GridCell.Tab.0.right/0.23.1680.991/1680.23.1920.1057@0.23.1680.991" timestamp="1589694927420" />
     <state width="1638" height="363" key="GridCell.Tab.1.bottom" timestamp="1590479026039">
@@ -350,10 +377,10 @@
       <screen x="1680" y="23" width="1920" height="1021" />
     </state>
     <state x="2668" y="304" width="540" height="524" key="StructurePopup/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589401770777" />
-    <state x="590" y="389" key="com.intellij.ide.util.TipDialog" timestamp="1590760298236">
+    <state x="590" y="389" key="com.intellij.ide.util.TipDialog" timestamp="1590877549340">
       <screen x="0" y="0" width="1680" height="1050" />
     </state>
-    <state x="590" y="389" key="com.intellij.ide.util.TipDialog/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590760298236" />
+    <state x="590" y="389" key="com.intellij.ide.util.TipDialog/0.0.1680.1050/1680.0.1920.1080@0.0.1680.1050" timestamp="1590877549340" />
     <state x="2354" y="401" key="com.intellij.ide.util.TipDialog/0.23.1680.1027/1680.23.1920.1021@1680.23.1920.1021" timestamp="1589758576231" />
     <state x="2069" y="237" key="new project wizard" timestamp="1589782053463">
       <screen x="1680" y="0" width="1920" height="1080" />
