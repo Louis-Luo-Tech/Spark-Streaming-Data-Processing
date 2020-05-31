@@ -22,7 +22,7 @@ object DateUtils {
   }
 
   def main(args: Array[String]): Unit = {
-//    println(parseToMinute("2020-05-30 15:37:59"))
-    println(inputFormat.parse("2020-05-30 15:37:59").getTime)
+    println(parseToMinute("2020-05-30 15:37:59"))
+//    println(inputFormat.parse("2020-05-30 15:37:59").getTime)
   }
 }
