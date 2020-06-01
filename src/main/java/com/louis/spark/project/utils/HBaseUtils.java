@@ -40,7 +40,6 @@ public class HBaseUtils {
         return instance;
     }
 
-
     public void insert(String tableName, String rowKey, String columnFamily, String column, String value) throws IOException {
         Put put = new Put(Bytes.toBytes(rowKey));
         put.addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes(column), Bytes.toBytes(value));
@@ -81,14 +80,14 @@ public class HBaseUtils {
 ////        }
 //        Table table = HBaseUtils.getInstance().getTableName("product_clickcount");
 //        System.out.println(table.getName().getNameAsString());
-
-        String tableName = "product_clickcount";
-        String rowKey = "20191111_3223442";
-        String columnFamily = "info";
-        String column = "click_count";
-        String value = "2";
-
-        HBaseUtils.getInstance().insert(tableName, rowKey, columnFamily, column, value);
+//
+//        String tableName = "product_clickcount";
+//        String rowKey = "20191111_3223442";
+//        String columnFamily = "info";
+//        String column = "click_count";
+//        String value = "2";
+//
+//        HBaseUtils.getInstance().insert(tableName, rowKey, columnFamily, column, value);
 
     }
 

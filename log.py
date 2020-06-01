@@ -10,5 +10,5 @@ import time
 import os
 
 while True:
-    time.sleep(6)
+    time.sleep(60)
     os.system('sh /Users/xiangluo/generatelog.sh')
