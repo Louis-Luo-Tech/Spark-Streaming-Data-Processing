@@ -1396,12 +1396,15 @@ import random
 import time
 
 url_paths = [
-        "product/nintendo-switch-console-with-neon-red-blue-joy-con/13817625",
-        "product/playstation-4-pro-1tb-console/12910052",
-        "product/xbox-one-s-1tb-star-wars-jedi-fallen-order-deluxe-edition-bundle/14056023",
-        "category/samsung-phones/505988",
-        "services/geek-squad-services/bltb5f906bfb57d7744",
-        "search?search=games"
+        "product/13817625.html",
+        "product/12910052.html",
+        "product/14056023.html",
+        "product/14610854.html",
+        "product/14056024.html",
+        "product/13817626.html",
+        "category/samsung-phones/505988.html",
+        "services/geek-squad-services/bltb5f906bfb57d7744.html",
+        "search?search=games.html"
         ]
 ip_slices = [43,167,43,132,232,124,10,29,143,30,46,55,63,72,87,98]
 
@@ -1437,11 +1440,11 @@ def sample_status_code():
     return random.sample(status_codes,1)[0]
 
 def generate_log(count = 10):
-    time_str = time.strftime("%Y-%M-%D %H:%M:%S",time.localtime())
+    time_str = time.strftime("%Y-%m-%d %H:%M:%S",time.localtime())
     f = open("/Users/xiangluo/data/log/access.log","w+")
     
     while count >=1:
-        query_log = "{ip}\t{local_time}\t\"GET \{url} HTTP/1.1\"\t{status_code}\t{referer}".format(ip=sample_ip(),url=sample_url(),
+        query_log = "{ip}\t{local_time}\t\"GET /{url} HTTP/1.1\"\t{status_code}\t{referer}".format(ip=sample_ip(),url=sample_url(),
                      referer= sample_referer(),status_code=sample_status_code(),local_time=time_str)
         print(query_log)
         f.write(query_log + "\n")
@@ -1470,7 +1473,9 @@ Some samples:
 Recommandation:
 
 ```
-crontab -e
+crontab -e 
+
+*/1 * * * * /Users/xiangluo/opt/anaconda3/bin/python /Users/xiangluo/Documents/GitHub/Spark-Streaming-Data-Processing/generate_log.py
 ```
 
 ## Use Flume to collect the log
@@ -1513,11 +1518,486 @@ flume-ng agent \
 ```
 
 
+## Integrate Flume and Kafka to collect the log
+
+```
+start zookeeper
+./zkServer.sh start
+
+start Kafka Server
+./kafka-server-start.sh $KAFKA_HOME/config/server.properties
+
+list all the topics
+./kafka-topics.sh --list --zookeeper localhost:2181
+
+start a Kafka consumer
+./kafka-console-consumer.sh --zookeeper localhost:2181 --topic streamingtopic 
+```
+
+
+Flume configuration file
+
+```
+# example.conf: A single-node Flume configuration
+
+# Name the components on this agent
+a1.sources = r1
+a1.sinks = k1
+a1.channels = c1
+
+# Describe/configure the source
+a1.sources.r1.type = exec
+a1.sources.r1.command = tail -F /Users/xiangluo/data/log/access.log
+a1.sources.r1.shell = /bin/sh -c
+
+# Describe the sink
+a1.sinks.k1.type = org.apache.flume.sink.kafka.KafkaSink
+a1.sinks.k1.topic = streamingtopic
+a1.sinks.k1.brokerList = localhost:9092
+a1.sinks.k1.batchSize = 20
+a1.sinks.k1.requiredAcks = 1
+
+# Use a channel which buffers events in memory
+a1.channels.c1.type = memory
+a1.channels.c1.capacity = 1000
+a1.channels.c1.transactionCapacity = 100
+
+# Bind the source and sink to the channel
+a1.sources.r1.channels = c1
+a1.sinks.k1.channel = c1
+```
+
+start flume
+
+```
+flume-ng agent \
+--name a1 \
+--conf $FLUME_HOME/conf \
+--conf-file $FLUME_HOME/conf/log_memory_kafka.conf \
+-Dflume.root.logger=INFO,console
+```
+
+
+## Use Spark Streaming to comsume the data
+
+```
+    if (args.length != 4) {
+      System.err.println("usage: zkQuorum, group, topics, numThreads")
+      System.exit(1)
+    }
+    val Array(zkQuorum, group, topics, numThreads) = args
+
+    val sparkConf: SparkConf = new SparkConf().setAppName("StreamingApp").setMaster("local[*]")
+    val ssc = new StreamingContext(sparkConf, Seconds(10))
+
+    val topicsMap = topics.split((",")).map((_, numThreads.toInt)).toMap
+
+    val message = KafkaUtils.createStream(ssc, zkQuorum, group, topicsMap)
+
+    message.map(_._2).count().print()
+```
+
+## Data Cleaning
+
+### 1. Parse time
+
+"2020-05-30 15:37:59" ==> "20200530153759"
+
+```
+  val inputFormat = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss")
+  val outputFormat = FastDateFormat.getInstance("yyyyMMddHHmmss")
+
+  def getTime(time: String) = {
+    inputFormat.parse(time).getTime
+  }
+
+  def parseToMinute(time: String) = {
+    outputFormat.format(new Date(getTime(time)))
+  }
+
+  def main(args: Array[String]): Unit = {
+    println(parseToMinute("2020-05-30 15:37:59"))
+  }
+```
+
+### 2. Filter data
+
+```
+    val logs = message.map(_._2)
+    val cleanData = logs.map(line => {
+      //      43.29.63.167	2020-05-30 15:50:25	"GET /product/14610854.html HTTP/1.1"	500	https://www.bing.com/search?q=ps4
+      val infos = line.split("\t")
+      val url = infos(2).split(" ")(1)
+      var productId = 0
+      //      "GET /product/12910052.html HTTP/1.1"
+      if (url.startsWith("/product")) {
+        val productIdHTML = url.split("/")(2)
+        productId = productIdHTML.substring(0, productIdHTML.lastIndexOf(".")).toInt
+      }
+      ClickLog(infos(0), DateUtils.parseToMinute(infos(1)), productId, infos(3).toInt, infos(4))
+    }).filter(ClickLog => ClickLog.productId != 0)
+```
+
+## Function one: Count the total number of product visit
+
+yyyyMMdd productID
+
+### Which database should we choose to store the data
+
+#### 1. RDBMS
+
+Mysql, Oracle
+
+day productId click_count
+
+The first batch
+
+20200530 1 10
+20200530 2 10
+
+The second batch
+
+20200530 1 ==> click_count + new click_count
+
+It's too complicated
+
+#### 2. NoSQL
+
+HBase, Redis
+
+But in HBase, we can use incrementColumnValue method to realize this function.
+
+
+## Requirement
+
+Start Zookeeper
+
+./zkServer.sh start
+
+Start HDFS
+
+./start-dfs.sh
+
+Start HBase
+
+```
+./start-hbase.sh 
+
+./hbase shell
+
+list all the tables in HBase
+list
+
+create a new table
+create 'product_clickcount','info'
+
+describe 'product_clickcount'
+```
+
+
+## Manipulate HBase
+
+The Utility class in Java should be encapsulated with single instance
+
+
+```
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.hbase.*;
+import org.apache.hadoop.hbase.client.*;
+import org.apache.hadoop.hbase.filter.*;
+import org.apache.hadoop.hbase.util.Bytes;
+
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
+
+/**
+ * Hbase operation
+ */
+public class HBaseUtils {
+    Admin admin = null;
+    Connection conn = null;
+    Configuration configuration = null;
+
+    private HBaseUtils() {
+        configuration = HBaseConfiguration.create();
+        configuration.set("hbase.zookeeper.quorum", "localhost");
+        configuration.set("hbase.zookeeper.property.clientPort", "2181");
+        configuration.set("hbase.rootdir", "hdfs://localhost:9000/hbase");
+        try {
+            conn = ConnectionFactory.createConnection(configuration);
+            admin = conn.getAdmin();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static HBaseUtils instance = null;
+
+    public static synchronized HBaseUtils getInstance() {
+        if (instance == null) {
+            instance = new HBaseUtils();
+        }
+        return instance;
+    }
+
+    public void insert(String tableName, String rowKey, String columnFamily, String column, String value) throws IOException {
+        Put put = new Put(Bytes.toBytes(rowKey));
+        put.addColumn(Bytes.toBytes(columnFamily), Bytes.toBytes(column), Bytes.toBytes(value));
+        Table table = conn.getTable(TableName.valueOf(tableName));
+        table.put(put);
+    }
+
+    public List<TableDescriptor> listTables() throws IOException {
+        List<TableDescriptor> tableDescriptors = admin.listTableDescriptors();
+        return tableDescriptors;
+    }
+
+//    public HTable getTable(String tablename){
+//        HTable table = null;
+//        try {
+//            table = new HTable(configuration, tablename);
+//        } catch (IOException e){
+//            e.printStackTrace();
+//        }
+//        return table;
+
+    public Table getTableName(String tableName) {
+        Table table = null;
+        try {
+            table = conn.getTable(TableName.valueOf(tableName));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return table;
+
+    }
+
+    public static void main(String[] args) throws IOException {
+//        List tables = HBaseUtils.getInstance().listTables();
+////        Iterator it1 = tables.iterator();
+////        while(it1.hasNext()){
+////            System.out.println(it1.next());
+////        }
+//        Table table = HBaseUtils.getInstance().getTableName("product_clickcount");
+//        System.out.println(table.getName().getNameAsString());
+//
+//        String tableName = "product_clickcount";
+//        String rowKey = "20191111_3223442";
+//        String columnFamily = "info";
+//        String column = "click_count";
+//        String value = "2";
+//
+//        HBaseUtils.getInstance().insert(tableName, rowKey, columnFamily, column, value);
+
+    }
+}
+```
+
+DAO level
+
+```
+object ProductClickCountDAO {
+
+  val tablName = "product_clickcount"
+  val cf = "info"
+  val qualifer = "click_count"
+
+  /**
+   * save the data to hbase
+   *
+   * @param list the collection of ProductClickCount
+   */
+  def save(list: ListBuffer[ProductClickCount]): Unit = {
+
+    val table = HBaseUtils.getInstance().getTableName(tablName)
+
+    for(ele <- list){
+      table.incrementColumnValue(Bytes.toBytes(ele.day_product),
+        Bytes.toBytes(cf),
+        Bytes.toBytes(qualifer),
+        ele.click_count)
+    }
+  }
+
+  /**
+   * select the count value according to rowkey
+   * @param day_count
+   * @return
+   */
+  def count(day_product: String): Long = {
+
+    val table = HBaseUtils.getInstance().getTableName(tablName)
+    val get = new Get(Bytes.toBytes(day_product))
+    val value = table.get(get).getValue(cf.getBytes(), qualifer.getBytes())
+
+    if (value == null) {
+      0L
+    } else {
+      Bytes.toLong(value)
+    }
+
+  }
+
+  def main(args: Array[String]): Unit = {
+    val list = new ListBuffer[ProductClickCount]
+    list.append(ProductClickCount("20191111_1",10))
+    list.append(ProductClickCount("20191111_2",20))
+    list.append(ProductClickCount("20191111_3",30))
+
+    save(list)
+
+    println(count("20191111_1") + ":" + count("20191111_2") + ":" + count("20191111_3"));
+  }
+}
+```
+
+
+## Write the data from Spark Streaming DStream to HBase
+
+```
+    cleanData.map(x => {
+      //rowkey
+      (x.time.substring(0, 8) + "_" + x.productId, 1)
+    }).reduceByKey(_ + _).foreachRDD(rdd => {
+      rdd.foreachPartition(partitionRecords => {
+        val list = new ListBuffer[ProductClickCount]
+        partitionRecords.foreach(pair => {
+          list.append(ProductClickCount(pair._1, pair._2))
+        })
+        ProductClickCountDAO.save(list) //write the data for each partition
+      })
+    })
+```
+
+## Common errors and solutions
+
+Java.lang.NoSuchMethodError: io.netty.buffer.PooledByteBufAllocator.defaultNumHeapArena()I
+
+This error is caused by multiple versions of netty in the dependencies.
+
+
+Get the dependency tree from Maven
+```
+mvn dependency:tree -Dverbose> dependency.log
+```
+
+We can know that this jar is both included in Spark Straming and HBase server dependencies.
+
+Solution:
+```
+        <dependency>
+            <groupId>org.apache.hbase</groupId>
+            <artifactId>hbase-server</artifactId>
+            <version>2.2.4</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>io.netty</groupId>
+                    <artifactId>netty-all</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+```
+
+Also we can speficy the dependencies in this way
+
+```
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.42.Final</version>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
 
 
 
 
 
+## Function two: Count the total number of product visit from search engine
+
+Create a new table
+
+```
+create 'product_search_clickcount','info'
+```
+
+rowkey  
+
+20200530 + search engine +1
+
+The process is similar to Function one. Please refer to com.louis.spark.project.dao.ProductSearchClickCountDAO
 
 
+Filter the data and write it in HBase
+```
+    cleanData.map(x=>{
+//      https://www.google.com/search?sxsrf=ps4
+      val referer = x.referer.replaceAll("//","/");
+      val splits = referer.split("/")
+      var host = ""
+      if(splits.length > 2){
+        host = splits(1)
+      }
+      (host,x.productId,x.time)
+    }).filter(_._1 != "").map(x =>{
+      (x._3.substring(0,8) + "_" + x._1 + x._2,1)
+    }).reduceByKey(_ + _).foreachRDD(rdd =>{
+      rdd.foreachPartition(partitionRecords =>{
+        val list = new ListBuffer[ProductSearchClickCount]
+        partitionRecords.foreach(pair =>{
+          list.append(ProductSearchClickCount(pair._1,pair._2))
+        })
+        ProductSearchClickCountDAO.save(list)
+      })
+    })
+```
+
+
+## Local test
+
+Delete all the data in HBase
+
+```
+truncate 'product_search_clickcount'
+```
+
+Run StreamingApp again, all the information is stored in HBase successfully.
+
+```
+scan "product_clickcount"
+
+scan 'product_search_clickcount'
+```
+
+
+## Launching Spark on YARN
+
+Some errors
+
+/Users/xiangluo/Documents/GitHub/Spark-Streaming-Data-Processing/src/main/scala/com/louis/spark/project/dao/ProductClickCountDAO.scala:4: error: object HBaseUtils is not a member of package com.louis.spark.project.utils
+
+Solution
+
+comment this line in pom.xml
+
+<!--        <sourceDirectory>src/main/scala</sourceDirectory>-->
+
+
+Failure to find org.glassfish:javax.el:pom:3.0.1-b06-SNAPSHOT in https://repository.apache.org/snapshots was cached in the local repository, resolution will not be reattempted until the update interval of apache.snapshots has elapsed or updates are forced
+
+
+Have not been fixed yet. But when it is packaged as a jar file, it runs successfully.
+
+```
+spark-submit \
+--class com.louis.spark.project.spark.StreamingApp \
+--master "local[*]" \
+--name StreamingApp \
+/Users/xiangluo/Documents/GitHub/Spark-Streaming-Data-Processing/target/Spark-Streaming-Data-Processing-1.0-SNAPSHOT-shaded.jar \
+localhost:2181 test streamingtopic 10
+```
 
