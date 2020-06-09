@@ -1181,6 +1181,11 @@ spark-streaming-kafka-0-10_2.11-2.4.5
 
 
 # Spark Streaming + Flume + Kafka Integration
+
+## Architecture Solution
+
+![Screenshot](images/image1.jepg)
+
 ## Print log with Log4j
 
 Code
