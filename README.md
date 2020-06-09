@@ -4,18 +4,19 @@
 
 ### Project Needs
 * Client access information and the geographic information distribution
-* Geographic information: ip conversion
 * Client: User agent
-* Process: Offline Spark/MapReduce
+* Process: Offline Spark
 
 
 ### Project Steps
-* ip information,useragent
-* Statistical analysis: Spark/MapReduce
+* ip information, useragent
+* Statistical analysis: Spark
 
 ### project Architecture
 * Log collection: Flume
-* Offline analysis: Spark/MapReduce
+* Offline analysis: Spark
+* operational monitoring data: Kafka
+* Real-time data processing engine: Spark-Streaming
 * Graphical display of statistical results
 
 ## Real-time Processing and Stream Processing
