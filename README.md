@@ -1184,7 +1184,7 @@ spark-streaming-kafka-0-10_2.11-2.4.5
 
 ## Architecture Solution
 
-![Screenshot](images/image1.jepg)
+![Screenshot](images/image1.jpg)
 
 ## Print log with Log4j
 
